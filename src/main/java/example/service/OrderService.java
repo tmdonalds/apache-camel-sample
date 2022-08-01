@@ -34,6 +34,8 @@ public class OrderService {
             camelContext.createProducerTemplate().sendBodyAndHeaders("direct:prepareOrders",job.getOrders(),headers);
         }
 
+        LOGGER.info("finished processing");
+
         camelContext.stop();
 
     }
