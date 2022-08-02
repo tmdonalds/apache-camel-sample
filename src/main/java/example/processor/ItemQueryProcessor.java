@@ -1,6 +1,7 @@
 package example.processor;
 
 
+import example.domain.Item;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.slf4j.Logger;
@@ -16,7 +17,9 @@ public class ItemQueryProcessor implements Processor {
 
     @Override
     public void process(Exchange exchange) throws Exception {
-        LOGGER.info("preparing to make a rest call");
+        LOGGER.info("preparing to make a rest call : {}", exchange.getIn().getBody(Item.class).getItemId());
         Thread.sleep(1000L); //this would do some type of rest query
+
+        exchange.getIn().setBody(exchange.getIn().getBody());
     }
 }

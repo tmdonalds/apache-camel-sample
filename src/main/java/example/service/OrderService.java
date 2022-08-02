@@ -31,7 +31,7 @@ public class OrderService {
             Map<String, Object> headers = new HashMap<>();
             headers.put("ORDER_ID", nextOrder.getOrderId());
             headers.put("TOTAL_ITEMS", nextOrder.getItems());
-            camelContext.createProducerTemplate().sendBodyAndHeaders("direct:prepareOrders",job.getOrders(),headers);
+            camelContext.createProducerTemplate().sendBodyAndHeaders("direct:prepareOrders",nextOrder.getItems(),headers);
         }
 
         LOGGER.info("finished processing");

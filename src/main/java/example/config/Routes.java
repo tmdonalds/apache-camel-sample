@@ -21,6 +21,7 @@ public class Routes extends RouteBuilder {
                 .to("direct:aggregateItems");
 
         from("direct:aggregateItems")
+                .log("preparing to aggregate")
                 .aggregate(header("ORDER_ID"), new ItemAggregator())
                 .completionSize(header("TOTAL_ITEMS"))
                 .executorService(new SynchronousExecutorService())

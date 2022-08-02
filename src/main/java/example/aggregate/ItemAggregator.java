@@ -1,5 +1,6 @@
 package example.aggregate;
 
+import example.domain.Item;
 import example.domain.Order;
 import org.apache.camel.AggregationStrategy;
 import org.apache.camel.Exchange;
@@ -14,19 +15,19 @@ import java.util.Collection;
 public class ItemAggregator implements AggregationStrategy {
     @Override
     public Exchange aggregate(Exchange oldExchange, Exchange newExchange) {
-        Order body = newExchange.getIn().getBody(Order.class);
+        Item body = newExchange.getIn().getBody(Item.class);
 
-        Collection<Order> orders;
+        Collection<Item> items;
 
         if(oldExchange == null){
-            orders = new ArrayList<>();
-            orders.add(body);
-            newExchange.getIn().setBody(orders);
+            items = new ArrayList<>();
+            items.add(body);
+            newExchange.getIn().setBody(items);
 
             return newExchange;
         } else {
-            orders = oldExchange.getIn().getBody(ArrayList.class);
-            orders.add(body);
+            items = oldExchange.getIn().getBody(ArrayList.class);
+            items.add(body);
             return oldExchange;
         }
     }

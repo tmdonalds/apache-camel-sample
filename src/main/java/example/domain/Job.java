@@ -15,12 +15,12 @@ public class Job {
         this.orders = new ArrayList<>();
 
         List<Item> item1 = new ArrayList<>();
-        item1.add(new Item("item 1","123456789"));
-        item1.add(new Item("item 2","987654321"));
+        item1.add(new Item("item 1","1-123456789"));
+        item1.add(new Item("item 2","1-987654321"));
 
         List<Item> item2 = new ArrayList<>();
-        item1.add(new Item("item 1","123456789"));
-        item1.add(new Item("item 2","987654321"));
+        item2.add(new Item("item 1","2-123456789"));
+        item2.add(new Item("item 2","2-987654321"));
 
         Order e = new Order("123456789", item1);
         orders.add(e);
