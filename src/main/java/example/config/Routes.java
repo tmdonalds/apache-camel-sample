@@ -23,12 +23,12 @@ public class Routes extends RouteBuilder {
         from("direct:aggregateItems")
                 .log("preparing to aggregate")
                 .aggregate(header("ORDER_ID"), new ItemAggregator())
-                .completionSize(header("TOTAL_ITEMS"))
                 .executorService(new SynchronousExecutorService())
-                .to("direct:processQueriedItems");
+                .completionSize(header("TOTAL_ITEMS"))
+                .to("direct:processQueriedItems2");
 
         from("direct:processQueriedItems")
-                .log("processing queried item")
+                .log("processing queried items")
                 .process("queriedItemsProcessor")
                 .end();
     }
