@@ -17,9 +17,10 @@ public class ItemQueryProcessor implements Processor {
 
     @Override
     public void process(Exchange exchange) throws Exception {
-        LOGGER.info("preparing to make a rest call : {}", exchange.getIn().getBody(Item.class).getItemId());
+        Item body = exchange.getIn().getBody(Item.class);
+        LOGGER.info("preparing to make a rest call : {}", body.getItemId());
         Thread.sleep(1000L); //this would do some type of rest query
 
-        exchange.getIn().setBody(exchange.getIn().getBody());
+        exchange.getIn().setBody(body);
     }
 }

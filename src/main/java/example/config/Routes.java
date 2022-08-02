@@ -2,7 +2,6 @@ package example.config;
 
 import example.aggregate.ItemAggregator;
 import org.apache.camel.builder.RouteBuilder;
-import org.apache.camel.util.concurrent.SynchronousExecutorService;
 
 import javax.enterprise.context.ApplicationScoped;
 
@@ -12,24 +11,15 @@ public class Routes extends RouteBuilder {
     @Override
     public void configure() throws Exception {
         from("direct:prepareOrders")
-                .split(body())
-                .parallelProcessing()
-                .to("direct:processOrders");
-
-        from("direct:processOrders")
+                .split(body(), new ItemAggregator()).parallelProcessing()
                 .process("itemQueryProcessor")
-                .to("direct:aggregateItems");
+                .end()
+                .log("${header.ORDER_ID} out of ${header.TOTAL_ITEMS}")
+                .to("direct:processQueryItems");
 
-        from("direct:aggregateItems")
-                .log("preparing to aggregate")
-                .aggregate(header("ORDER_ID"), new ItemAggregator())
-                .executorService(new SynchronousExecutorService())
-                .completionSize(header("TOTAL_ITEMS"))
-                .to("direct:processQueriedItems2");
-
-        from("direct:processQueriedItems")
-                .log("processing queried items")
+        from("direct:processQueryItems")
                 .process("queriedItemsProcessor")
-                .end();
+                .log("i'm ready");
+
     }
 }

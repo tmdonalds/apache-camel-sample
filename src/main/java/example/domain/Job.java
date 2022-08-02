@@ -17,6 +17,7 @@ public class Job {
         List<Item> item1 = new ArrayList<>();
         item1.add(new Item("item 1","1-123456789"));
         item1.add(new Item("item 2","1-987654321"));
+        item1.add(new Item("item 3","1-111222333"));
 
         List<Item> item2 = new ArrayList<>();
         item2.add(new Item("item 1","2-123456789"));
