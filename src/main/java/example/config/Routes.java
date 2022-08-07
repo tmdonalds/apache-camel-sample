@@ -29,10 +29,15 @@ public class Routes extends RouteBuilder {
 
         from("direct:createItems")
                 .bean(ItemGenerator.class, "createItems")
+                .wireTap("direct:tap")
                 .split(body()).streaming().parallelProcessing().executorService(executorService)
                     .bean(BatchItemGenerator.class)
                 .end()
                 .log("finished processing them all");
+
+        from("direct:tap")
+                .log("tapped createItems : ${body.size}");
+
 
     }
 }

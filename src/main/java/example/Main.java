@@ -7,6 +7,7 @@ import io.quarkus.arc.ArcContainer;
 import io.quarkus.runtime.Quarkus;
 import io.quarkus.runtime.QuarkusApplication;
 import io.quarkus.runtime.annotations.QuarkusMain;
+import org.apache.camel.CamelContext;
 import org.apache.camel.quarkus.core.CamelRuntime;
 import org.apache.camel.quarkus.main.CamelMainApplication;
 
@@ -17,17 +18,22 @@ import javax.inject.Named;
 import java.lang.reflect.ParameterizedType;
 
 @QuarkusMain
-public class Main implements QuarkusApplication {
+public class Main implements QuarkusApplication{
+
+    private static int totalItems;
+
+//    public static void main(String[] args) {
+//        totalItems = Integer.parseInt(args[0]);
+//        Quarkus.run(Main.class,args);
+//    }
 
     @Inject
     OrderService orderService;
-    private static int totalItems;
 
     @Override
     public int run(String... args) throws Exception {
         CamelRuntime runtime = Arc.container().instance(CamelRuntime.class).get();
         runtime.start(new String[]{});
-
         totalItems = Integer.parseInt(args[0]);
         orderService.processItems();
         return 0;
