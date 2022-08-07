@@ -1,9 +1,13 @@
 package example.config;
 
 import example.aggregate.ItemAggregator;
+import example.service.BatchItemGenerator;
+import example.service.ItemGenerator;
 import org.apache.camel.builder.RouteBuilder;
 
 import javax.enterprise.context.ApplicationScoped;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @ApplicationScoped
 public class Routes extends RouteBuilder {
@@ -20,6 +24,15 @@ public class Routes extends RouteBuilder {
         from("direct:processQueryItems")
                 .process("queriedItemsProcessor")
                 .log("i'm ready");
+
+        ExecutorService executorService = Executors.newFixedThreadPool(20);
+
+        from("direct:createItems")
+                .bean(ItemGenerator.class, "createItems")
+                .split(body()).streaming().parallelProcessing().executorService(executorService)
+                    .bean(BatchItemGenerator.class)
+                .end()
+                .log("finished processing them all");
 
     }
 }
